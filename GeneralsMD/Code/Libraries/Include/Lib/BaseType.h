@@ -20,12 +20,12 @@
 //
 // Project:  RTS3
 //
-// Basic types and constants
+// Basic types and constants - 基本类型和常量
 // Author: Michael S. Booth, January 1995, September 2000
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-// tell the compiler to only load this file once
+// tell the compiler to only load this file once - 告诉编译器只加载这个文件一次
 
 #pragma once
 
@@ -33,7 +33,7 @@
 #include "Lib/trig.h"
 
 //-----------------------------------------------------------------------------
-typedef wchar_t WideChar;  ///< multi-byte character representations
+typedef wchar_t WideChar;  ///< multi-byte character representations - 多字节字符表示
 
 //-----------------------------------------------------------------------------
 template <typename NUM>
@@ -63,9 +63,9 @@ inline Real rad2deg(Real rad) { return rad * (180/PI); }
 inline Real deg2rad(Real rad) { return rad * (PI/180); }
 
 //-----------------------------------------------------------------------------
-// For twiddling bits
+// For twiddling bits - 
 //-----------------------------------------------------------------------------
-// TheSuperHackers @build xezon 17/03/2025 Renames BitTest to BitIsSet to prevent conflict with BitTest macro from winnt.h
+// TheSuperHackers @build xezon 17/03/2025 Renames BitTest to BitIsSet to prevent conflict with BitTest macro from winnt.h - 将BitTest重命名为bitset，以防止与wint .h中的BitTest宏冲突
 #define BitIsSet( x, i ) ( ( (x) & (i) ) != 0 )
 #define BitSet( x, i ) ( (x) |= (i) )
 #define BitClear( x, i ) ( (x ) &= ~(i) )
@@ -73,9 +73,9 @@ inline Real deg2rad(Real rad) { return rad * (PI/180); }
 
 //-------------------------------------------------------------------------------------------------
 
-// note, this function depends on the cpu rounding mode, which we set to CHOP every frame,
-// but apparently tends to be left in unpredictable modes by various system bits of
-// code, so use this function with caution -- it might not round in the way you want.
+// note, this function depends on the cpu rounding mode, which we set to CHOP every frame, - 注意，此函数取决于cpu舍入模式，我们将其设置为每帧CHOP，
+// but apparently tends to be left in unpredictable modes by various system bits of - 但很明显，它往往会被各种系统比特留在不可预测的模式中代码
+// code, so use this function with caution -- it might not round in the way you want. - 所以要谨慎使用这个函数 它可能不会按您想要的方式进行舍入。
 __forceinline long fast_float2long_round(float f)
 {
 	long i;
@@ -92,8 +92,8 @@ __forceinline long fast_float2long_round(float f)
 	return i;
 }
 
-// super fast float trunc routine, works always (independent of any FPU modes)
-// code courtesy of Martin Hoffesommer (grin)
+// super fast float trunc routine, works always (independent of any FPU modes) - 超快速浮动主干程序，始终工作（独立于任何FPU模式）
+// code courtesy of Martin Hoffesommer (grin) - 代码由Martin Hoffesommer提供（笑）
 __forceinline float fast_float_trunc(float f)
 {
 #if defined(_MSC_VER) && _MSC_VER < 1300
@@ -120,7 +120,7 @@ __forceinline float fast_float_trunc(float f)
 #endif
 }
 
-// same here, fast floor function
+// same here, fast floor function - 这里也一样，快速底函数
 __forceinline float fast_float_floor(float f)
 {
   static unsigned almost1=(126<<23)|0x7fffff;
@@ -129,7 +129,7 @@ __forceinline float fast_float_floor(float f)
   return fast_float_trunc(f);
 }
 
-// same here, fast ceil function
+// same here, fast ceil function - 这里也一样，快速天花板函数
 __forceinline float fast_float_ceil(float f)
 {
   static unsigned almost1=(126<<23)|0x7fffff;
@@ -195,7 +195,7 @@ struct Coord2D
 		}
 	}
 
-	Real toAngle( void ) const;  ///< turn 2D vector into angle (where angle 0 is down the +x axis)
+	Real toAngle( void ) const;  ///< turn 2D vector into angle (where angle 0 is down the +x axis) - 将2D矢量转换为角度（其中角度0沿+x轴向下）
 
 };
 
@@ -206,7 +206,7 @@ inline Real Coord2D::toAngle( void ) const
 		return 0.0f;
 
 	Real c = x/len;
-	// bound it in case of numerical error
+	// bound it in case of numerical error - 在数值误差的情况下对它进行限制
 	if (c < -1.0f)
 		c = -1.0f;
 	else if (c > 1.0f)
@@ -224,7 +224,7 @@ struct ICoord2D
 
 struct Region2D
 {
-	Coord2D lo, hi;						// bounds of 2D rectangular region
+	Coord2D lo, hi;						// bounds of 2D rectangular region - 二维矩形区域的边界
 
 	Real width( void ) const { return hi.x - lo.x; }
 	Real height( void ) const { return hi.y - lo.y; }
@@ -232,7 +232,7 @@ struct Region2D
 
 struct IRegion2D
 {
-	ICoord2D lo, hi;					// bounds of 2D rectangular region
+	ICoord2D lo, hi;					// bounds of 2D rectangular region - 二维矩形区域的边界
 
 	Int width( void ) const { return hi.x - lo.x; }
 	Int height( void ) const { return hi.y - lo.y; }
@@ -338,7 +338,7 @@ struct ICoord3D
 
 struct Region3D
 {
-	Coord3D lo, hi;						// axis-aligned bounding box
+	Coord3D lo, hi;						// axis-aligned bounding box - 轴对齐的边界框
 
 	Real width( void ) const { return hi.x - lo.x; }
 	Real height( void ) const { return hi.y - lo.y; }
@@ -360,7 +360,7 @@ struct Region3D
 
 struct IRegion3D
 {
-	ICoord3D lo, hi;					// axis-aligned bounding box
+	ICoord3D lo, hi;					// axis-aligned bounding box - 轴对齐的边界框
 
 	Int width( void ) const { return hi.x - lo.x; }
 	Int height( void ) const { return hi.y - lo.y; }
@@ -370,7 +370,7 @@ struct IRegion3D
 
 struct RGBColor
 {
-	Real red, green, blue;		// range between 0 and 1
+	Real red, green, blue;		// range between 0 and 1 - 取值范围为0到1
 
 	inline Int getAsInt() const
 	{
@@ -392,13 +392,13 @@ struct RGBColor
 struct RGBAColorReal
 {
 
-	Real red, green, blue, alpha;  // range between 0.0 and 1.0
+	Real red, green, blue, alpha;  // range between 0.0 and 1.0 - 范围在0.0到1.0之间
 
 };
 
 struct RGBAColorInt
 {
 
-	UnsignedInt red, green, blue, alpha;  // range between 0 and 255
+	UnsignedInt red, green, blue, alpha;  // range between 0 and 255 - 取值范围为0 ~ 255
 
 };

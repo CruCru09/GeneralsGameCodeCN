@@ -24,14 +24,14 @@
 
 // FILE: WinMain.cpp //////////////////////////////////////////////////////////
 //
-// Entry point for game application
+// Entry point for game application - 游戏应用的入口点
 //
 // Author: Colin Day, April 2001
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-// SYSTEM INCLUDES ////////////////////////////////////////////////////////////
-#define WIN32_LEAN_AND_MEAN  // only bare bones windows stuff wanted
+// SYSTEM INCLUDES - 系统包括 ////////////////////////////////////////////////////////////
+#define WIN32_LEAN_AND_MEAN  // only bare bones windows stuff wanted - 只需要最基本的Windows操作系统
 #include <windows.h>
 #include <stdlib.h>
 #include <crtdbg.h>
@@ -39,7 +39,7 @@
 #include <ole2.h>
 #include <dbt.h>
 
-// USER INCLUDES //////////////////////////////////////////////////////////////
+// USER INCLUDES - 用户包括 //////////////////////////////////////////////////////////////
 #include "WinMain.h"
 #include "Lib/BaseType.h"
 #include "Common/CommandLine.h"
@@ -69,15 +69,15 @@
 #include <rts/profile.h>
 
 
-// GLOBALS ////////////////////////////////////////////////////////////////////
-HINSTANCE ApplicationHInstance = NULL;  ///< our application instance
-HWND ApplicationHWnd = NULL;  ///< our application window handle
-Win32Mouse *TheWin32Mouse= NULL;  ///< for the WndProc() only
-DWORD TheMessageTime = 0;	///< For getting the time that a message was posted from Windows.
+// GLOBALS - 全局变量 ////////////////////////////////////////////////////////////////////
+HINSTANCE ApplicationHInstance = NULL;  ///< our application instance - 应用程序实例
+HWND ApplicationHWnd = NULL;  ///< our application window handle - 应用程序窗口句柄
+Win32Mouse *TheWin32Mouse= NULL;  ///< for the WndProc() only - 仅适用于WndProc（）
+DWORD TheMessageTime = 0;	///< For getting the time that a message was posted from Windows. - 用于获取消息从Windows发布的时间。
 
 const Char *g_strFile = "data\\Generals.str";
 const Char *g_csfFile = "data\\%s\\Generals.csf";
-const char *gAppPrefix = ""; /// So WB can have a different debug log file name.
+const char *gAppPrefix = ""; /// So WB can have a different debug log file name. - 因此，WB可以使用不同的调试日志文件名。
 
 static Bool gInitializing = false;
 static Bool gDoPaint = true;
@@ -85,7 +85,7 @@ static Bool isWinMainActive = false;
 
 static HBITMAP gLoadScreenBitmap = NULL;
 
-//#define DEBUG_WINDOWS_MESSAGES
+//#define DEBUG_WINDOWS_MESSAGES 通过switch-case结构将数百个Windows消息ID映射为对应的常量名称，极大简化了窗口消息处理的调试工作
 
 #ifdef DEBUG_WINDOWS_MESSAGES
 static const char *messageToString(unsigned int message)
@@ -288,7 +288,7 @@ static const char *messageToString(unsigned int message)
 #endif
 
 // WndProc ====================================================================
-/** Window Procedure */
+/** Window Procedure - 窗口程序 */
 //=============================================================================
 LRESULT CALLBACK WndProc( HWND hWnd, UINT message,
 													WPARAM wParam, LPARAM lParam )
@@ -301,7 +301,7 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT message,
 		{
 			if ( TheIMEManager->serviceIMEMessage( hWnd, message, wParam, lParam ) )
 			{
-				// The manager intercepted an IME message so return the result
+				// The manager intercepted an IME message so return the result - 管理器截获了一条IME消息，因此返回结果
 				return TheIMEManager->result();
 			}
 		}
@@ -313,12 +313,12 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT message,
 		OutputDebugString(testString);
 #endif
 
-		// handle all window messages
+		// handle all window messages - 处理所有窗口消息
 		switch( message )
 		{
 			//-------------------------------------------------------------------------
 			case WM_NCHITTEST:
-			// Prevent the user from selecting the menu in fullscreen mode
+			// Prevent the user from selecting the menu in fullscreen mode - 防止用户在全屏模式下选择菜单
             if( !TheGlobalData->m_windowed )
                 return HTCLIENT;
             break;
@@ -331,28 +331,28 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT message,
                     #define PBT_APMQUERYSUSPEND 0x0000
                 #endif
                 case PBT_APMQUERYSUSPEND:
-                    // At this point, the app should save any data for open
-                    // network connections, files, etc., and prepare to go into
-                    // a suspended mode.
+                    // At this point, the app should save any data for open - 此时，应用程序应该保存所有数据以供打开
+                    // network connections, files, etc., and prepare to go into - 网络连接，文件等，并准备进入
+                    // a suspended mode. - 暂停模式。
                     return TRUE;
 
                 #ifndef PBT_APMRESUMESUSPEND
                     #define PBT_APMRESUMESUSPEND 0x0007
                 #endif
                 case PBT_APMRESUMESUSPEND:
-                    // At this point, the app should recover any data, network
-                    // connections, files, etc., and resume running from when
-                    // the app was suspended.
+                    // At this point, the app should recover any data, network - 在这一点上，应用程序应该恢复任何数据，网络
+                    // connections, files, etc., and resume running from when - 连接、文件等，并从何时开始恢复运行
+                    // the app was suspended. - 该应用程序被暂停。
                     return TRUE;
             }
             break;
 			//-------------------------------------------------------------------------
 			case WM_SYSCOMMAND:
-            // Prevent moving/sizing and power loss in fullscreen mode
+            // Prevent moving/sizing and power loss in fullscreen mode - 防止移动/大小和电力损失在全屏模式
             switch( wParam )
             {
                 case SC_KEYMENU:
-                    // TheSuperHackers @bugfix Mauller 10/05/2025 Always handle this command to prevent halting the game when left Alt is pressed.
+                    // TheSuperHackers @bugfix Mauller 10/05/2025 Always handle this command to prevent halting the game when left Alt is pressed. - 总是处理这个命令，以防止停止游戏时，左键Alt被按下。
                     return 1;
                 case SC_MOVE:
                 case SC_SIZE:
@@ -367,24 +367,24 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT message,
 			case WM_QUERYENDSESSION:
 			{
 				TheMessageStream->appendMessage(GameMessage::MSG_META_DEMO_INSTANT_QUIT);
-				return 0;	//don't allow Windows to shutdown while game is running.
+				return 0;	//don't allow Windows to shutdown while game is running. - 不允许Windows在游戏运行时关闭。
 			}
 
 			// ------------------------------------------------------------------------
-			case WM_CLOSE:
+			case WM_CLOSE: //关闭
 			if (!TheGameEngine->getQuitting())
 			{
-				//user is exiting without using the menus
+				//user is exiting without using the menus - 用户在未使用菜单的情况下退出
 
-				//This method didn't work in cinematics because we don't process messages.
-				//But it's the cleanest way to exit that's similar to using menus.
+				//This method didn't work in cinematics because we don't process messages. - 这种方法并不适用于动画，因为我们不处理信息。
+				//But it's the cleanest way to exit that's similar to using menus. - 但这是最干净的退出方式，类似于使用菜单。
 				TheMessageStream->appendMessage(GameMessage::MSG_META_DEMO_INSTANT_QUIT);
 
-				//This method used to disable quitting.  We just put up the options screen instead.
+				//This method used to disable quitting.  We just put up the options screen instead. - 此方法用于禁用退出。我们只是用选项屏幕来代替。
 				//TheMessageStream->appendMessage(GameMessage::MSG_META_OPTIONS);
 
-				//This method works everywhere but isn't as clean at shutting down.
-				//TheGameEngine->checkAbnormalQuitting();	//old way to log disconnections for ALT-F4
+				//This method works everywhere but isn't as clean at shutting down. - 这种方法在任何地方都有效，但在关闭时就不那么干净了。
+				//TheGameEngine->checkAbnormalQuitting();	//old way to log disconnections for - 记录断开连接的旧方法 ALT-F4
 				//TheGameEngine->reset();
 				//TheGameEngine->setQuitting(TRUE);
 				//_exit(EXIT_SUCCESS);
@@ -392,12 +392,12 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT message,
 			}
 
 			// ------------------------------------------------------------------------
-			case WM_SETFOCUS:
+			case WM_SETFOCUS: //设置焦点
 			{
 
 				//
 				// reset the state of our keyboard cause we haven't been paying
-				// attention to the keys while focus was away
+				// attention to the keys while focus was away - 注意力不在的时候注意按键
 				//
 				if( TheKeyboard )
 					TheKeyboard->resetKeys();
@@ -410,7 +410,7 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT message,
 			}
 
 			//-------------------------------------------------------------------------
-			case WM_MOVE:
+			case WM_MOVE: //移动
 			{
 				if (TheMouse)
 					TheMouse->refreshCursorCapture();
@@ -421,7 +421,7 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT message,
 			//-------------------------------------------------------------------------
 			case WM_SIZE:
 			{
-				// When W3D initializes, it resizes the window.  So stop repainting.
+				// When W3D initializes, it resizes the window.  So stop repainting. - 当W3D初始化时，它会调整窗口的大小。所以不要再重新粉刷了。
 				if (!gInitializing)
 					gDoPaint = false;
 
@@ -444,16 +444,16 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT message,
 			}
 
 			//-------------------------------------------------------------------------
-			case WM_ACTIVATEAPP:
+			case WM_ACTIVATEAPP: //激活应用
 			{
 				if ((bool) wParam != isWinMainActive)
 				{
-					// TheSuperHackers @bugfix xezon 11/05/2025 This event originally called DX8Wrapper::Reset_Device,
-					// intended to clear resources on a lost device in fullscreen, but effectively also in
-					// windowed mode, if the DXMaximizedWindowedMode shim was applied in newer versions of Windows,
-					// which lead to unfortunate application crashing. Resetting the device on WM_ACTIVATEAPP instead
-					// of TestCooperativeLevel() == D3DERR_DEVICENOTRESET is not a requirement. There are other code
-					// paths that take care of that.
+					// TheSuperHackers @bugfix xezon 11/05/2025 This event originally called DX8Wrapper::Reset_Device - 此事件最初称为DX8Wrapper::Reset_Device
+					// intended to clear resources on a lost device in fullscreen, but effectively also in - 旨在清除资源上丢失的设备在全屏，但有效地也在
+					// windowed mode, if the DXMaximizedWindowedMode shim was applied in newer versions of Windows, - 如果DXMaximizedWindowedMode shim在较新版本的Windows中应用
+					// which lead to unfortunate application crashing. Resetting the device on WM_ACTIVATEAPP instead - 这会导致不幸的应用程序崩溃。重置WM_ACTIVATEAPP上的设备
+					// of TestCooperativeLevel() == D3DERR_DEVICENOTRESET is not a requirement. There are other code - testcooperativellevel () == D3DERR_DEVICENOTRESET不是必需的。还有其他的代码
+					// paths that take care of that. - 处理这个的路径。
 
 					isWinMainActive = (BOOL) wParam;
 
@@ -461,7 +461,7 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT message,
 						TheGameEngine->setIsActive(isWinMainActive);
 
 					if (isWinMainActive)
-					{	//restore mouse cursor to our custom version.
+					{	//restore mouse cursor to our custom version. - 将鼠标光标恢复到自定义版本。
 						if (TheWin32Mouse)
 							TheWin32Mouse->setCursor(TheWin32Mouse->getMouseCursor());
 					}
@@ -483,7 +483,7 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT message,
 					if (TheAudio)
 						TheAudio->regainFocus();
 
-					// Cursor can only be captured after one of the activation events.
+					// Cursor can only be captured after one of the activation events. - 游标只能在其中一个激活事件之后捕获。
 					if (TheMouse)
 						TheMouse->refreshCursorCapture();
 				}
@@ -492,7 +492,7 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT message,
 			}
 
 			//-------------------------------------------------------------------------
-			case WM_KEYDOWN:
+			case WM_KEYDOWN: //按下按键
 			{
 				Int key = (Int)wParam;
 
@@ -516,7 +516,8 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT message,
 			}
 
 			//-------------------------------------------------------------------------
-			case WM_LBUTTONDOWN:
+			// 鼠标按键消息处理组 - Mouse Button Message Handling Group [ 待验证 ]
+			case WM_LBUTTONDOWN: 
 			case WM_LBUTTONUP:
 			case WM_LBUTTONDBLCLK:
 
@@ -537,17 +538,18 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT message,
 			}
 
 			//-------------------------------------------------------------------------
-			case 0x020A: // WM_MOUSEWHEEL
+			case 0x020A: // WM_MOUSEWHEEL 鼠标滚轮 [ 待验证 ]
 			{
-				long x = (long) LOWORD(lParam);
-				long y = (long) HIWORD(lParam);
+				long x = (long) LOWORD(lParam);	// 从lParam低16位获取鼠标X坐标
+				long y = (long) HIWORD(lParam);	// 从lParam高16位获取鼠标Y坐标
 				RECT rect;
 
-				// ignore when outside of client area
+				// ignore when outside of client area - 在客户端区域之外忽略
 				GetWindowRect( ApplicationHWnd, &rect );
 				if( x < rect.left || x > rect.right || y < rect.top || y > rect.bottom )
 					return 0;
 
+				// 如果鼠标在窗口内，将滚轮事件添加到输入系统
 				if( TheWin32Mouse )
 					TheWin32Mouse->addWin32Event( message, wParam, lParam, TheMessageTime );
 
@@ -557,14 +559,14 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT message,
 
 
 			//-------------------------------------------------------------------------
-			case WM_MOUSEMOVE:
+			case WM_MOUSEMOVE: //鼠标移动
 			{
 				Int x = (Int)LOWORD( lParam );
 				Int y = (Int)HIWORD( lParam );
 				RECT rect;
 //				Int keys = wParam;
 
-				// ignore when outside of client area
+				// ignore when outside of client area - 在客户端区域之外忽略
 				GetClientRect( ApplicationHWnd, &rect );
 				if( x < rect.left || x > rect.right || y < rect.top || y > rect.bottom )
 					return 0;
@@ -581,7 +583,7 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT message,
 			{
 				if (TheWin32Mouse && (HWND)wParam == ApplicationHWnd)
 					TheWin32Mouse->setCursor(TheWin32Mouse->getMouseCursor());
-				return TRUE;	//tell Windows not to reset mouse cursor image to default.
+				return TRUE;	//tell Windows not to reset mouse cursor image to default. - 告诉Windows不要将鼠标光标图像重置为默认值。
 			}
 
 			case WM_PAINT:
@@ -612,13 +614,13 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT message,
 			case WM_ERASEBKGND:
 			{
 				if (!gDoPaint)
-					return TRUE;	//we don't need to erase the background because we always draw entire window.
+					return TRUE;	//we don't need to erase the background because we always draw entire window. - 我们不需要擦除背景，因为我们总是绘制整个窗口。
 				break;
 			}
 
-// Well, it was a nice idea, but we don't get a message for an ejection.
-// (Really unforunate, actually.) I'm leaving this in in-case some one wants
-// to trap a different device change (for instance, removal of a mouse) - jkmcd
+// Well, it was a nice idea, but we don't get a message for an ejection. - 这主意不错，但我们没有收到弹出的信息。
+// (Really unforunate, actually.) I'm leaving this in in-case some one wants - （实际上，真的很不幸。）我把这个留在这里，以防有人想要
+// to trap a different device change (for instance, removal of a mouse) - jkmcd - 捕获不同设备的变化（例如，移除鼠标）- JKMCD
 #if 0
 			case WM_DEVICECHANGE:
 			{
@@ -633,7 +635,7 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT message,
 						break;
 					}
 
-					// Lets discuss how Windows is a flaming pile of poo. I'm now casting the header
+					// Lets discuss how Windows is a flaming pile of poo. I'm now casting the header 
 					// directly into the structure, because its the one I want, and this is just how
 					// its done. I hate Windows. - jkmcd
 					DEV_BROADCAST_VOLUME *vol = (DEV_BROADCAST_VOLUME*) (hdr);
@@ -652,12 +654,12 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT message,
 	catch (...)
 	{
 		RELEASE_CRASH(("Uncaught exception in Main::WndProc... probably should not happen"));
-		// no rethrow
+		// no rethrow - 没有重新抛出
 	}
 
-//In full-screen mode, only pass these messages onto the default windows handler.
-//Appears to fix issues with dual monitor systems but doesn't seem safe?
-///@todo: Look into proper support for dual monitor systems.
+//In full-screen mode, only pass these messages onto the default windows handler. - 在全屏模式下，只将这些消息传递给默认的窗口处理程序。
+//Appears to fix issues with dual monitor systems but doesn't seem safe? - 似乎解决了双监视器系统的问题，但似乎不安全？
+///@todo: Look into proper support for dual monitor systems. - 查看对双监视器系统的适当支持。
 /*	if (!TheGlobalData->m_windowed)
 	switch (message)
 	{
@@ -675,7 +677,7 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT message,
 }
 
 // initializeAppWindows =======================================================
-/** Register windows class and create application windows. */
+/** Register windows class and create application windows. - 注册windows类并创建应用程序窗口 */
 //=============================================================================
 static Bool initializeAppWindows( HINSTANCE hInstance, Int nCmdShow, Bool runWindowed )
 {
@@ -683,7 +685,7 @@ static Bool initializeAppWindows( HINSTANCE hInstance, Int nCmdShow, Bool runWin
 	Int startWidth = DEFAULT_DISPLAY_WIDTH,
 			startHeight = DEFAULT_DISPLAY_HEIGHT;
 
-	// register the window class
+	// register the window class - 注册窗口类
 
   WNDCLASS wndClass = { CS_HREDRAW | CS_VREDRAW | CS_DBLCLKS, WndProc, 0, 0, hInstance,
                        LoadIcon (hInstance, MAKEINTRESOURCE(IDI_ApplicationIcon)),
@@ -692,7 +694,7 @@ static Bool initializeAppWindows( HINSTANCE hInstance, Int nCmdShow, Bool runWin
 	                     TEXT("Game Window") };
   RegisterClass( &wndClass );
 
-   // Create our main window
+   // Create our main window - 创建主窗口
 	windowStyle =  WS_POPUP|WS_VISIBLE;
 	if (runWindowed)
 		windowStyle |= WS_DLGFRAME | WS_CAPTION | WS_SYSMENU;
@@ -706,7 +708,7 @@ static Bool initializeAppWindows( HINSTANCE hInstance, Int nCmdShow, Bool runWin
 	rect.bottom = startHeight;
 	AdjustWindowRect (&rect, windowStyle, FALSE);
 	if (runWindowed) {
-		// Makes the normal debug 800x600 window center in the screen.
+		// Makes the normal debug 800x600 window center in the screen. - 使正常调试窗口位于屏幕中心800x600。
 		startWidth = DEFAULT_DISPLAY_WIDTH;
 		startHeight= DEFAULT_DISPLAY_HEIGHT;
 	}
@@ -716,8 +718,8 @@ static Bool initializeAppWindows( HINSTANCE hInstance, Int nCmdShow, Bool runWin
   HWND hWnd = CreateWindow( TEXT("Game Window"),
                             TEXT("Command and Conquer Generals"),
                             windowStyle,
-														(GetSystemMetrics( SM_CXSCREEN ) / 2) - (startWidth / 2), // original position X
-														(GetSystemMetrics( SM_CYSCREEN ) / 2) - (startHeight / 2),// original position Y
+														(GetSystemMetrics( SM_CXSCREEN ) / 2) - (startWidth / 2), // original position X - 初始位置X
+														(GetSystemMetrics( SM_CYSCREEN ) / 2) - (startHeight / 2),// original position Y - 初始位置Y
 														// Lorenzen nudged the window higher
 														// so the constantdebug report would
 														// not get obliterated by assert windows, thank you.
@@ -743,22 +745,22 @@ static Bool initializeAppWindows( HINSTANCE hInstance, Int nCmdShow, Bool runWin
 	ShowWindow( hWnd, nCmdShow );
 	UpdateWindow( hWnd );
 
-	// save our application window handle for future use
+	// save our application window handle for future use - 保存我们的应用程序窗口句柄以供将来使用
 	ApplicationHWnd = hWnd;
 	gInitializing = false;
 	if (!runWindowed) {
 		gDoPaint = false;
 	}
 
-	return true;  // success
+	return true;  // success - 成功
 
 }
 
-// Necessary to allow memory managers and such to have useful critical sections
+// Necessary to allow memory managers and such to have useful critical sections - 必须允许内存管理器等具有有用的临界区
 static CriticalSection critSec1, critSec2, critSec3, critSec4, critSec5;
 
-// UnHandledExceptionFilter ===================================================
-/** Handler for unhandled win32 exceptions. */
+// UnHandledExceptionFilter - 未处理异常过滤器 ===================================================
+/** Handler for unhandled win32 exceptions. - 处理未处理的win32异常。 */
 //=============================================================================
 static LONG WINAPI UnHandledExceptionFilter( struct _EXCEPTION_POINTERS* e_info )
 {
@@ -782,11 +784,11 @@ Int APIENTRY WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 		SetUnhandledExceptionFilter( UnHandledExceptionFilter );
 		//
-		// there is something about checkin in and out the .dsp and .dsw files
-		// that blows the working directory information away on each of the
-		// developers machines so we're going to hack it for a while and set our
-		// working directory to the directory with the .exe since that's not the
-		// default in a DevStudio project
+		// there is something about checkin in and out the .dsp and .dsw files - 有一些关于签入和签出的。DSP和。dsw文件下手
+		// that blows the working directory information away on each of the - 将每个目录的工作目录信息清除
+		// developers machines so we're going to hack it for a while and set our - 开发者的机器，所以我们要破解它一段时间，并设置我们的
+		// working directory to the directory with the .exe since that's not the - 工作目录到带有。exe的目录，因为它不是
+		// default in a DevStudio project - DevStudio项目的默认设置
 		//
 
 		TheAsciiStringCriticalSection = &critSec1;
@@ -795,10 +797,10 @@ Int APIENTRY WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		TheMemoryPoolCriticalSection = &critSec4;
 		TheDebugLogCriticalSection = &critSec5;
 
-		// initialize the memory manager early
+		// initialize the memory manager early - 尽早初始化内存管理器
 		initMemoryManager();
 
-		/// @todo remove this force set of working directory later
+		/// @todo remove this force set of working directory later - @todo稍后删除工作目录的强制集
 		Char buffer[ _MAX_PATH ];
 		GetModuleFileName( NULL, buffer, sizeof( buffer ) );
 		if (Char *pEnd = strrchr(buffer, '\\'))
@@ -809,7 +811,7 @@ Int APIENTRY WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 
 		#ifdef RTS_DEBUG
-			// Turn on Memory heap tracking
+			// Turn on Memory heap tracking - 打开内存堆跟踪
 			int tmpFlag = _CrtSetDbgFlag( _CRTDBG_REPORT_FLAG );
 			tmpFlag |= (_CRTDBG_LEAK_CHECK_DF|_CRTDBG_ALLOC_MEM_DF);
 			tmpFlag &= ~_CRTDBG_CHECK_CRT_DF;
@@ -818,15 +820,15 @@ Int APIENTRY WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 
 
-		// install debug callbacks
+		// install debug callbacks - 安装调试回调
 	//	WWDebug_Install_Message_Handler(WWDebug_Message_Callback);
 	//	WWDebug_Install_Assert_Handler(WWAssert_Callback);
 
 
-// Force "splash image" to be loaded from a file, not a resource so same exe can be used in different localizations.
+// Force "splash image" to be loaded from a file, not a resource so same exe can be used in different localizations. - 强制“splash image”从文件加载，而不是从资源加载，以便相同的exe可以在不同的本地化中使用。
 #if defined(RTS_DEBUG) || defined RTS_PROFILE
 
-			// check both localized directory and root dir
+			// check both localized directory and root dir - 检查本地化目录和根目录
 		char filePath[_MAX_PATH];
 		const char *fileName = "Install_Final.bmp";
 		static const char *localizedPathFormat = "Data/%s/";
@@ -842,17 +844,17 @@ Int APIENTRY WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		}
 #else
 
-		// in release, the file only ever lives in the root dir
+		// in release, the file only ever lives in the root dir - 在发布版本中，该文件只存在于根目录中
 		gLoadScreenBitmap = (HBITMAP)LoadImage(hInstance, "Install_Final.bmp", IMAGE_BITMAP, 0, 0, LR_SHARED|LR_LOADFROMFILE);
 #endif
 
 		CommandLine::parseCommandLineForStartup();
 
-		// register windows class and create application window
+		// register windows class and create application window - 注册Windows类并创建应用程序窗口
 		if(!TheGlobalData->m_headless && initializeAppWindows(hInstance, nCmdShow, TheGlobalData->m_windowed) == false)
 			return exitcode;
 
-		// save our application instance for future use
+		// save our application instance for future use - 保存我们的应用程序实例以供将来使用
 		ApplicationHInstance = hInstance;
 
 		if (gLoadScreenBitmap!=NULL) {
@@ -866,7 +868,7 @@ Int APIENTRY WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 
 
-		// Set up version info
+		// Set up version info - 设置版本信息
 		TheVersion = NEW Version;
 		TheVersion->setVersion(VERSION_MAJOR, VERSION_MINOR, VERSION_BUILDNUM, VERSION_LOCALBUILDNUM,
 			AsciiString(VERSION_BUILDUSER), AsciiString(VERSION_BUILDLOC),
@@ -893,7 +895,7 @@ Int APIENTRY WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 		DEBUG_LOG(("CRC message is %d", GameMessage::MSG_LOGIC_CRC));
 
-		// run the game main loop
+		// run the game main loop - 运行游戏主循环
 		exitcode = GameMain();
 
 		delete TheVersion;
@@ -908,7 +910,7 @@ Int APIENTRY WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 		shutdownMemoryManager();
 
-		// BGC - shut down COM
+		// BGC - shut down COM - BGC -关闭COM
 	//	OleUninitialize();
 	}
 	catch (...)
@@ -924,16 +926,16 @@ Int APIENTRY WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 }
 
-// CreateGameEngine ===========================================================
-/** Create the Win32 game engine we're going to use */
+// CreateGameEngine - 创建游戏引擎 ===========================================================
+/** Create the Win32 game engine we're going to use - 创建我们将要使用的Win32游戏引擎 */
 //=============================================================================
 GameEngine *CreateGameEngine( void )
 {
 	Win32GameEngine *engine;
 
 	engine = NEW Win32GameEngine;
-	//game engine may not have existed when app got focus so make sure it
-	//knows about current focus state.
+	//game engine may not have existed when app got focus so make sure it - 当应用获得焦点时，游戏引擎可能还不存在，所以要确保它存在
+	//knows about current focus state. - 知道当前的焦点状态。
 	engine->setIsActive(isWinMainActive);
 
 	return engine;

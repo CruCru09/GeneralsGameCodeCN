@@ -17,14 +17,14 @@
 */
 
 // Trig.h
-// fast trig functions
+// fast trig functions - 快速三角函数
 // Author: Sondra Iverson, March 1998
 // Converted to Generals by Matthew D. Campbell, February 2002
 
 #pragma once
 
-Real Sin(Real);
-Real Cos(Real);
-Real Tan(Real);
-Real ACos(Real);
-Real ASin(Real x);
+Real Sin(Real);			//正弦函数 - Sine function
+Real Cos(Real);			//余弦函数 - Cosine function  
+Real Tan(Real);			//正切函数 - Tangent function
+Real ACos(Real);		//反余弦函数 - Arccosine function
+Real ASin(Real x);	//反正弦函数 - Arcsine function
