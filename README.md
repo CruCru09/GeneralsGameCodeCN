@@ -11,81 +11,83 @@
 [![GitHub issues by-label](https://img.shields.io/github/issues/TheSuperHackers/GeneralsGameCode/critical?style=flat&label=Critical%20Issues&labelColor=%23c4c4c4&color=%23424242)](https://github.com/TheSuperHackers/GeneralsGameCode/issues?q=label%3ACritical)
 [![GitHub issues by-label](https://img.shields.io/github/issues/TheSuperHackers/GeneralsGameCode/blocker?style=flat&label=Blocker%20Issues&labelColor=%23c4c4c4&color=%23424242)](https://github.com/TheSuperHackers/GeneralsGameCode/issues?q=label%3ABlocker)
 
-# Welcome to the Generals Game Code Project
+# 欢迎来到将军游戏代码项目
 
-GeneralsGameCode is a community-driven project aimed at fixing and improving the classic RTS game, *Command &
-Conquer: Generals* and its expansion *Zero Hour*. This repository contains the source code for both games, with a
-primary focus on *Zero Hour*.
+GeneralsGameCode是一个社区驱动的项目，旨在修复和改进经典的RTS游戏，*命令&
 
-Additionally, there is a complementary project repository for fixing and improving game data and assets such as
-INI scripts, GUI, AI, maps, models, textures, audio, localization. You can find it
-[here](https://github.com/TheSuperHackers/GeneralsGamePatch/) and contribute to it as well.
+征服：将军*及其扩展*零时*。这个存储库包含了这两款游戏的源代码
 
-## Project Overview
+主要关注“零时”。
 
-The game was originally developed using Visual Studio 6 and C++98. We've updated the code to be compatible with Visual
-Studio 2022 and C++20.
+此外，还有一个用于修复和改进游戏数据和资产的补充项目存储库
 
-The initial goal of this project is to fix critical bugs and implement improvements while maintaining compatibility with
-the original *Generals* version 1.08 and *Zero Hour* version 1.04. Once we can break retail compatibility, more fixes
-and features will be possible to implement.
+INI脚本，GUI， AI，地图，模型，纹理，音频，本地化。你可以找到它
+[here](https://github.com/TheSuperHackers/GeneralsGamePatch/) 并为之做出贡献。
 
-## Current Focus and Future Plans
+## 项目概述
 
-Here's an overview of our current focus and future plans
+游戏最初是用Visual Studio 6和c++ 98开发的。我们已经更新了代码以与Visual兼容
 
-- **Modernizing the Codebase**: Transitioning to modern C++ standards and refactoring old code.
-- **Critical Bug Fixes**: Fixing game-breaking issues (e.g., fullscreen crash).
-- **Minor Bug Fixes**: Addressing minor bugs (e.g., UI issues, graphical glitches).
-- **Cross-Platform Support**: Adding support for more platforms (e.g., Linux, macOS).
-- **Engine Improvements**: Enhancing the game engine to improve performance and stability.
-- **Client-Side Features**: Enhancing the game's client with features such as an improved replay viewer and UI updates.
-- **Multiplayer Improvements**: Implementing a new game server and an upgraded matchmaking lobby.
-- **Tooling Improvements**: Developing new or improving existing tools for modding and game development.
-- **Community-Driven Improvements**: Once the community grows, we plan to incorporate more features, updates, and
-  changes based on player feedback.
+Studio 2022和c++ 20。
 
-## Running the Game
+该项目的初始目标是修复关键错误并实现改进，同时保持与
 
-To run *Generals* or *Zero Hour* using this project, you need to have the original *Command & Conquer: Generals and Zero Hour* game
-installed. The easiest way to get it is through *Command & Conquer The Ultimate Collection*
-on [Steam](https://store.steampowered.com/bundle/39394). Once the game is ready, download the latest version of the
-project from [GitHub Releases](https://github.com/TheSuperHackers/GeneralsGameCode/releases), extract the necessary 
-files, and follow the instructions in the [Wiki](https://github.com/TheSuperHackers/GeneralsGameCode/wiki).
+原来的*将军*版本1.08和*零时*版本1.04。一旦我们可以打破零售兼容性，更多的修复
 
+功能将有可能实现。
 
-## Joining the Community
+## 当前重点和未来计划
 
-You can chat and discuss the development of the project on our [Discord channel](https://www.community-outpost.com/discord) to get the latest updates,
-report bugs, and contribute to the project!
+以下是我们目前的重点和未来计划的概述
 
-## Building the Game Yourself
+- **使代码库现代化**: 过渡到现代c++标准并重构旧代码。
+- **关键Bug修复**: 修复破坏游戏的问题（如全屏崩溃）。
+- **小错误修复**: 解决小错误（例如，UI问题，图形故障）。
+- **跨平台的支持**: 增加对更多平台的支持（例如，Linux, macOS）。
+- **引擎的改进**: 增强游戏引擎，提高性能和稳定性。
+- **客户端功能**: 增强游戏的客户端功能，如改进的重播查看器和UI更新。
+- **多人的改进**: 实现了一个新的游戏服务器和升级的配对大厅。
+- **工具的改进**: 开发新的或改进现有的建模和游戏开发工具。
+- **社区驱动的改进**: 一旦社区发展壮大，我们计划加入更多的功能，更新，和根据玩家反馈进行调整。
 
-We provide support for building the project using Visual Studio 6 (VS6) and Visual Studio 2022. For detailed build
-instructions, check the [Wiki](https://github.com/TheSuperHackers/GeneralsGameCode/wiki/build_guides), which also
-includes guides for building with Docker, CLion, and links to forks supporting additional versions.
+## 运行游戏
 
-### Dependency management
-
-The repository uses a vcpkg manifest (`vcpkg.json`) paired with a lockfile (`vcpkg-lock.json`). When you add or upgrade
-dependencies, run `vcpkg install --x-manifest-root . --triplet <triplet>` with `VCPKG_FEATURE_FLAGS=versions` so the
-lockfile picks up the new versions and include the updated lockfile in your change. GitHub Actions consumes these ports
-through `VCPKG_BINARY_SOURCES=clear;files,<workspace>/vcpkg-bincache,readwrite` (paired with an `actions/cache` entry for
-that folder), so the first CI build warms the cache and subsequent builds pull prebuilt binaries instead of
-re-compiling everything.
-
-## Contributing
-
-We welcome contributions to the project! If you’re interested in contributing, you need to have knowledge of C++. Join
-the developer chat on Discord for more information on how to get started. Please make sure to read our
-[Contributing Guidelines](CONTRIBUTING.md) before submitting a pull request. You can also check out 
-the [Wiki](https://github.com/TheSuperHackers/GeneralsGameCode/wiki) for more detailed documentation.
+要运行*将军*或*零时*使用这个项目，你需要有原来的*命令与征服：将军和零时* 游戏安装。最简单的方法是通过*命令与征服的终极集合*
+在 [Steam](https://store.steampowered.com/bundle/39394). 一旦游戏准备好了，下载最新版本的
+项目从 [GitHub Releases](https://github.com/TheSuperHackers/GeneralsGameCode/releases), 提取必要的
+文件，并按照 [Wiki](https://github.com/TheSuperHackers/GeneralsGameCode/wiki).
 
 
-## License & Legal Disclaimer
+## 加入社区
 
-EA has not endorsed and does not support this product. All trademarks are the property of their respective owners.
+您可以在我们的网站上聊天和讨论项目的发展 [Discord channel](https://www.community-outpost.com/discord) 要获取最新更新，请报告bug，并为项目做出贡献！
 
-This project is licensed under the [GPL-3.0 License](https://www.gnu.org/licenses/gpl-3.0.html), which allows you to
-freely modify and distribute the source code under the terms of this license. Please see [LICENSE.md](LICENSE.md) 
-for details.
+## 自己创造游戏
+
+我们为使用Visual Studio 6 （VS6）和Visual Studio 2022构建项目提供支持。详细构建
+说明，请查看 [Wiki](https://github.com/TheSuperHackers/GeneralsGameCode/wiki/build_guides)，这也包括使用Docker、CLion构建的指南，以及支持其他版本的分支的链接。
+
+### 依赖关系管理
+
+存储库使用vcpkg清单 (`vcpkg.json`) 还有一个锁文件 (`vcpkg-lock.json`). 添加或升级时
+
+依赖关系, `vcpkg install --x-manifest-root . --triplet <triplet>` 与 `VCPKG_FEATURE_FLAGS=versions` 因此,Lockfile获取新版本，并在更改中包含更新后的Lockfile。GitHub Actions使用这些端口
+通过 `VCPKG_BINARY_SOURCES=clear;files,<workspace>/vcpkg-bincache,readwrite` (搭配一个 `actions/cache` 条目该文件夹)因此，第一次CI构建将使用缓存，后续构建将使用预构建的二进制文件，而不是
+
+基于一切。
+
+## 贡献
+
+欢迎对项目的贡献！如果你对贡献感兴趣，你需要有c++的知识。加入
+
+开发者在Discord上聊天以获取更多关于如何开始的信息。请务必阅读我们的
+[Contributing Guidelines](CONTRIBUTING.md) 在提交拉取请求之前。你也可以退出
+the [Wiki](https://github.com/TheSuperHackers/GeneralsGameCode/wiki) 有关更详细的文档。
+
+
+## 许可和法律免责声明
+
+EA没有认可也不支持这个产品。所有商标均为其各自所有者的财产。
+
+本项目在 [GPL-3.0 License](https://www.gnu.org/licenses/gpl-3.0.html)，这样你就可以
+在本许可证的条款下自由地修改和分发源代码。请参阅 [LICENSE.md](LICENSE.md) 获取详细信息。
